@@ -19,3 +19,5 @@ data/
 !vaultwarden-verify-audit.sh
 !Logs/
 !README.md
+docker-compose.yml
+.env.example
