@@ -6,7 +6,7 @@ An automated backup pipeline for Vaultwarden running on Docker. Backups are capt
 
 ## Architecture Overview
 
-~~text
+```text
                       +-----------------------------+
                       |   Live Vaultwarden Stack    |
                       |  (/home/.../vaultwarden)    |
@@ -27,62 +27,62 @@ An automated backup pipeline for Vaultwarden running on Docker. Backups are capt
                        |   Google Drive Remote   |
                        |  (VaultwardenBackups/)  |
                        +-------------------------+
-~~
+```
 
 ---
 
 ## Prerequisites & Dependencies
 
-The host VM requires rclone for offsite Google Drive syncing, git for configuration tracking, and an SSH Deploy Key:
+The host VM requires `rclone` for offsite Google Drive syncing, `git` for configuration tracking, and an SSH Deploy Key:
 
-~~bash
+```bash
 # Host dependencies
 sudo apt update && sudo apt install -y git rclone
-~~
+```
 
 ### Required Directory Permissions
-~~bash
+```bash
 sudo chmod o+x /var/backups
 sudo chown -R rvaitpros:rvaitpros /var/backups/vaultwarden
 chmod -R 755 /var/backups/vaultwarden
-~~
+```
 
 ---
 
 ## Configuration
 
-### 1. Rclone (rclone.conf.example)
+### 1. Rclone (`rclone.conf.example`)
 Configure Google Drive remote storage:
-~~bash
+```bash
 rclone config
-~~
-* Remote Name: gdrive
-* Storage Type: drive
-* Root Folder: VaultwardenBackups
+```
+* Remote Name: `gdrive`
+* Storage Type: `drive`
+* Root Folder: `VaultwardenBackups`
 
-*Refer to rclone.conf.example for non-sensitive structure.*
+*Refer to `rclone.conf.example` for non-sensitive structure.*
 
 ### 2. GitHub Deploy Key
 SSH Deploy Keys provide restricted write access for version tracking without personal account passwords:
-~~bash
+```bash
 ssh-keygen -t ed25519 -C "vaultwarden-backup-deploy-key" -f ~/.ssh/github_bitwarden_deploy_key -N ""
-~~
+```
 1. Add `~/.ssh/github_bitwarden_deploy_key.pub` to **Repository Settings > Deploy Keys** with **Write Access** enabled.
 2. Add the host entry to `~/.ssh/config`:
-~~text
+```text
 Host github.com
     HostName github.com
     User git
     IdentityFile ~/.ssh/github_bitwarden_deploy_key
     IdentitiesOnly yes
     StrictHostKeyChecking accept-new
-~~
+```
 
 ---
 
 ## Backup Script
 
-### Daily Backup: /usr/local/bin/vaultwarden-backup.sh
+### Daily Backup: `/usr/local/bin/vaultwarden-backup.sh`
 * Flushes Write-Ahead Log (WAL) records to SQLite safely.
 * Packages database, RSA keys, attachments, and configs into `vaultwarden-nightly.tar.gz`.
 * Uploads the archive to `gdrive:VaultwardenBackups`.
@@ -93,9 +93,9 @@ Host github.com
 
 ### Nightly Backup
 Runs daily at 03:00 AM:
-~~cron
+```cron
 0 3 * * * /usr/local/bin/vaultwarden-backup.sh >> /var/log/vaultwarden-backup.log 2>&1
-~~
+```
 
 ---
 
