@@ -1,0 +1,15 @@
+# Ignore raw databases and archives
+*.sqlite3*
+*.tar.gz
+*.tar
+golden_reference.*
+*.env
+
+# Allow audit logs and markdown documentation
+!Logs/
+!README.md
+.env
+*.env
+data/
+*.key
+*.pem

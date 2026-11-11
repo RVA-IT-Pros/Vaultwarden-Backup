@@ -1,0 +1,16 @@
+version: '3.8'
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: always
+    environment:
+      WEBSOCKET_ENABLED: "true"
+      SIGNUPS_ALLOWED: "true"
+      # 👇 By using the map format, YAML will cleanly strip the outer single quotes
+      ROCKET_TLS: '{certs="/ssl/cert.pem",key="/ssl/key.pem"}'
+    volumes:
+      - ./vw-data:/data
+      - ./ssl:/ssl
+    ports:
+      - '8080:80'
