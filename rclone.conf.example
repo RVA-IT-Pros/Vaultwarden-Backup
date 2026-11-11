@@ -1,0 +1,8 @@
+[gdrive]
+type = drive
+scope = drive
+client_id = 
+client_secret = <REDACTED>
+team_drive = 0AL6rP8E_CMBdUk9PVA
+root_folder_id = 
+

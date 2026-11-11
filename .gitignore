@@ -1,15 +1,21 @@
-# Ignore raw databases and archives
+# Ignore all raw archives and SQLite databases
 *.sqlite3*
 *.tar.gz
 *.tar
 golden_reference.*
-*.env
 
-# Allow audit logs and markdown documentation
-!Logs/
-!README.md
+# Ignore live secrets and config files
 .env
 *.env
-data/
+rclone.conf
+*.conf
 *.key
 *.pem
+data/
+
+# Allow sanitized templates, scripts, and logs
+!rclone.conf.example
+!vaultwarden-backup.sh
+!vaultwarden-verify-audit.sh
+!Logs/
+!README.md
